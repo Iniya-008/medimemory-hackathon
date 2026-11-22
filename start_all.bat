@@ -1,9 +1,8 @@
 @echo off
-setlocal
-start "MediMemory Backend" /D "%~dp0" cmd /k "call start_backend.bat"
-start "MediMemory Frontend" /D "%~dp0" cmd /k "call start_frontend.bat"
-echo.
-echo MediMemory startup windows opened.
-echo Wait for both setup processes, then visit http://localhost:5173
- echo Keep both windows open while using MediMemory.
-pause
+rem Opens the backend and frontend in two separate windows.
+cd /d "%~dp0"
+start "MediMemory backend" cmd /k call "%~dp0start_backend.bat"
+timeout /t 4 /nobreak >nul
+start "MediMemory frontend" cmd /k call "%~dp0start_frontend.bat"
+timeout /t 6 /nobreak >nul
+start "" http://localhost:5173

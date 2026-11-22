@@ -1,38 +1,32 @@
 @echo off
-setlocal
+setlocal EnableExtensions
+title MediMemory - frontend (Vite)
 cd /d "%~dp0frontend"
-echo ========================================
-echo MediMemory - Frontend setup
-echo ========================================
-where node >nul 2>nul
+
+where npm >nul 2>&1
 if errorlevel 1 (
-  echo ERROR: Node.js was not found. Install Node.js, then reopen this file.
+  echo [ERROR] npm was not found. Install Node.js LTS from https://nodejs.org/
   pause
   exit /b 1
 )
-where npm >nul 2>nul
-if errorlevel 1 (
-  echo ERROR: npm was not found. Reinstall Node.js with npm included.
-  pause
-  exit /b 1
-)
-echo Node and npm versions:
-call node --version
-call npm --version
-if not exist node_modules (
-  echo.
-  echo Installing frontend dependencies. This requires internet access...
+if not exist "node_modules" (
+  echo [INFO] Frontend packages are missing. Installing now...
   call npm install
   if errorlevel 1 (
-    echo ERROR: Frontend dependencies failed to install. Read the error above.
+    echo [ERROR] npm install failed.
     pause
     exit /b 1
   )
 )
-if not exist .env copy .env.example .env >nul
+
 echo.
-echo Starting frontend at http://localhost:5173
-echo Keep this window open while using MediMemory.
+echo ============================================================
+echo   MediMemory web app starting on http://localhost:5173
+echo   Make sure start_backend.bat is running in another window.
+echo   Keep this window open. Press Ctrl+C to stop.
+echo ============================================================
+echo.
 call npm run dev
-if errorlevel 1 echo ERROR: Frontend stopped. Read the error above.
+echo.
+echo [INFO] The frontend has stopped. If you didn't stop it yourself, read the error above.
 pause
